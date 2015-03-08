@@ -1,0 +1,17 @@
+[Unit]
+Daescription=CoreGI
+After=docker.service
+Requires=docker.service
+
+[Service]
+#EnvironmentFile=/etc/environment
+User=core
+
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill mysqlserverPROD
+ExecStartPre=-/usr/bin/docker rm mysqlserverPROD
+ExecStartPre=/usr/bin/docker pull mysql
+ExecStart=/usr/bin/docker run --name mysqlserverPROD -e MYSQL_ROOT_PASSWORD= -d mysql
+
+[X-Fleet]
+Global=true
